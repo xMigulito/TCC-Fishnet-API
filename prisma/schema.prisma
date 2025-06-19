@@ -12,3 +12,72 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model TanqueUser {
+  Usuario_Sis_Id  Int
+  Tanque_Id       Int
+  Alterado_Em     DateTime
+
+  @@id([Usuario_Sis_Id, Tanque_Id])
+}
+
+model UsuarioSIS {
+  ID             Int      @id
+  E_mail         String
+  Usuario        String
+  Senha          String
+  Cooperativa_Id Int
+}
+
+model Cooperativa {
+  ID    Int    @id
+  Nome  String
+}
+
+model Tanque {
+  ID             Int    @id @default(autoincrement())
+  Largura        Float?
+  Area           Float?
+  Local          String?
+  Comprimento    Float?
+  Capacidade     Float?
+}
+
+model TanqueAlojamento {
+  ID                  Int    @id @default(autoincrement())
+  Tanque_Id           Int
+  Data_Alojamento     DateTime
+  Data_Saida          DateTime
+  Custo               Float
+  Lucro               Float
+  Valor_Venda_Final   Float
+  Total_Peixes        Int
+  Peso_Medio_Inicial  Float
+  Biomassa_Inicial    Int
+  Cooperativa_Id      Int
+}
+
+model BiometriaDiaria {
+  Data                  DateTime
+  Racao                 Float
+  Tanque_Alojamento_Id  Int
+  Temperatura_Agua      Float
+  Ph                    Float
+  Temperatura_Ambiente  String
+  Oxigenacao            Float
+
+  @@id([Data, Tanque_Alojamento_Id])
+}
+
+model BiometriaSemanal {
+  Tanque_Alojamento_Id  Int
+  Data_Alojamento       DateTime
+  Peixes_Mortos         Int
+  Peixes_Capturados     Float
+  Peso                  Float
+  Biomassa_Total        Int
+  Data_Abertura         DateTime
+  Data_Fechamento       DateTime
+
+  @@id([Tanque_Alojamento_Id, Data_Alojamento])
+}
