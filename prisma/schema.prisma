@@ -47,17 +47,18 @@ model TanqueAlojamento {
   ID                  Int    @id @default(autoincrement())
   Tanque_Id           Int
   Data_Alojamento     DateTime
-  Data_Saida          DateTime
-  Custo               Float
-  Lucro               Float
-  Valor_Venda_Final   Float
-  Total_Peixes        Int
-  Peso_Medio_Inicial  Float
-  Biomassa_Inicial    Int
-  Cooperativa_Id      Int
+  Data_Saida          DateTime?
+  Custo               Float?
+  Lucro               Float?
+  Valor_Venda_Final   Float?
+  Total_Peixes        Int?
+  Peso_Medio_Inicial  Float?
+  Biomassa_Inicial    Int?
+  Cooperativa_Id      Int?
 }
 
 model BiometriaDiaria {
+  ID                  Int    @id @default(autoincrement())
   Data                  DateTime
   Racao                 Float
   Tanque_Alojamento_Id  Int
@@ -66,10 +67,10 @@ model BiometriaDiaria {
   Temperatura_Ambiente  String
   Oxigenacao            Float
 
-  @@id([Data, Tanque_Alojamento_Id])
 }
 
 model BiometriaSemanal {
+  ID                  Int    @id @default(autoincrement())
   Tanque_Alojamento_Id  Int
   Data_Alojamento       DateTime
   Peixes_Mortos         Int
@@ -79,5 +80,4 @@ model BiometriaSemanal {
   Data_Abertura         DateTime
   Data_Fechamento       DateTime
 
-  @@id([Tanque_Alojamento_Id, Data_Alojamento])
 }

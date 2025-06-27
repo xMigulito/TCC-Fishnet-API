@@ -43,14 +43,14 @@ CREATE TABLE "TanqueAlojamento" (
     "ID" INTEGER NOT NULL,
     "Tanque_Id" INTEGER NOT NULL,
     "Data_Alojamento" TIMESTAMP(3) NOT NULL,
-    "Data_Saida" TIMESTAMP(3) NOT NULL,
+    "Data_Saida" TIMESTAMP(3),
     "Custo" DOUBLE PRECISION NOT NULL,
     "Lucro" DOUBLE PRECISION NOT NULL,
     "Valor_Venda_Final" DOUBLE PRECISION NOT NULL,
     "Total_Peixes" INTEGER NOT NULL,
     "Peso_Medio_Inicial" DOUBLE PRECISION NOT NULL,
     "Biomassa_Inicial" INTEGER NOT NULL,
-    "Cooperativa_Id" INTEGER NOT NULL,
+    "Cooperativa_Id" INTEGER,
 
     CONSTRAINT "TanqueAlojamento_pkey" PRIMARY KEY ("ID")
 );

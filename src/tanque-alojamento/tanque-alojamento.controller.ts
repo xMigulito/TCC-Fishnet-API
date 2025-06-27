@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { TanqueAlojamentoService } from './tanque-alojamento.service';
 import { CreateTanqueAlojamentoDto } from './dto/create-tanque-alojamento.dto';
 import { UpdateTanqueAlojamentoDto } from './dto/update-tanque-alojamento.dto';
@@ -15,6 +15,22 @@ export class TanqueAlojamentoController {
   @Get()
   findAll() {
     return this.tanqueAlojamentoService.findAll();
+  }
+
+  @Get('tanque/:tanqueId')
+  findByTanque(@Param('tanqueId') tanqueId: string) {
+    return this.tanqueAlojamentoService.findByTanque(+tanqueId);
+  }
+
+  @Get('periodo')
+  findByDateRange(
+    @Query('dataInicio') startDate: string,
+    @Query('dataFim') endDate: string,
+  ) {
+    return this.tanqueAlojamentoService.findByDateRange(
+      new Date(startDate),
+      new Date(endDate),
+    );
   }
 
   @Get(':id')

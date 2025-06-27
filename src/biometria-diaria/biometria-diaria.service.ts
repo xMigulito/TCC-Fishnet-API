@@ -1,26 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma.service';
 import { CreateBiometriaDiariaDto } from './dto/create-biometria-diaria.dto';
 import { UpdateBiometriaDiariaDto } from './dto/update-biometria-diaria.dto';
 
 @Injectable()
 export class BiometriaDiariaService {
+  constructor(private readonly prisma: PrismaService) {}
+
   create(createBiometriaDiariaDto: CreateBiometriaDiariaDto) {
-    return 'This action adds a new biometriaDiaria';
+    return this.prisma.biometriaDiaria.create({
+      data: {
+        Data: createBiometriaDiariaDto.Data,
+        Racao: createBiometriaDiariaDto.Racao,
+        Tanque_Alojamento_Id: createBiometriaDiariaDto.Tanque_Alojamento_Id,
+        Temperatura_Agua: createBiometriaDiariaDto.Temperatura_Agua,
+        Ph: createBiometriaDiariaDto.Ph,
+        Temperatura_Ambiente: createBiometriaDiariaDto.Temperatura_Ambiente,
+        Oxigenacao: createBiometriaDiariaDto.Oxigenacao,
+      },
+    });
   }
 
   findAll() {
-    return `This action returns all biometriaDiaria`;
+    return this.prisma.biometriaDiaria.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} biometriaDiaria`;
+  async findOne(id: number) {
+    const biometria = await this.prisma.biometriaDiaria.findUnique({
+      where: { ID: id },
+    });
+    if (!biometria) {
+      throw new NotFoundException(`BiometriaDiaria com ID ${id} não encontrada`);
+    }
+    return biometria;
   }
 
   update(id: number, updateBiometriaDiariaDto: UpdateBiometriaDiariaDto) {
-    return `This action updates a #${id} biometriaDiaria`;
+    return this.prisma.biometriaDiaria.update({
+      where: { ID: id },
+      data: updateBiometriaDiariaDto,
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} biometriaDiaria`;
+    return this.prisma.biometriaDiaria.delete({
+      where: { ID: id },
+    });
   }
 }
