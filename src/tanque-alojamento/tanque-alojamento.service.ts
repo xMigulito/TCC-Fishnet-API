@@ -20,7 +20,7 @@ export class TanqueAlojamentoService {
 
   async findOne(id: number) {
     const alojamento = await this.prisma.tanqueAlojamento.findUnique({
-      where: { ID: id },
+      where: { id: id },
     });
     if (!alojamento) {
       throw new NotFoundException(`Alojamento com ID ${id} não encontrado`);
@@ -57,12 +57,12 @@ export class TanqueAlojamentoService {
 
   update(id: number, updateTanqueAlojamentoDto: UpdateTanqueAlojamentoDto) {
     return this.prisma.tanqueAlojamento.update({
-      where: { ID: id },
+      where: { id: id },
       data: updateTanqueAlojamentoDto,
     });
   }
 
   remove(id: number) {
-    return this.prisma.tanqueAlojamento.delete({ where: { ID: id } });
+    return this.prisma.tanqueAlojamento.delete({ where: { id: id } });
   }
 }

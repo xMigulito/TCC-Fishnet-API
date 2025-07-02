@@ -28,7 +28,7 @@ export class BiometriaSemanalService {
 
   async findOne(id: number) {
     const biometria = await this.prisma.biometriaSemanal.findUnique({
-      where: { ID: id },
+      where: { id: id },
     });
     if (!biometria) {
       throw new NotFoundException(`BiometriaSemanal com ID ${id} não encontrada`);

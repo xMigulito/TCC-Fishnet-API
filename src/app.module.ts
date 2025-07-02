@@ -9,9 +9,10 @@ import { UsuarioSisModule } from './usuario-sis/usuario-sis.module';
 import { CooperativaModule } from './cooperativa/cooperativa.module';
 import { BiometriaDiariaModule } from './biometria-diaria/biometria-diaria.module';
 import { BiometriaSemanalModule } from './biometria-semanal/biometria-semanal.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
-  imports: [TanqueModule, TanqueAlojamentoModule, TanqueUserModule, UsuarioSisModule, CooperativaModule, BiometriaDiariaModule, BiometriaSemanalModule],
+  imports: [TanqueModule, TanqueAlojamentoModule, TanqueUserModule, UsuarioSisModule, CooperativaModule, BiometriaDiariaModule, BiometriaSemanalModule, DashboardModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

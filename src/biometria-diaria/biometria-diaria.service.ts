@@ -27,7 +27,7 @@ export class BiometriaDiariaService {
 
   async findOne(id: number) {
     const biometria = await this.prisma.biometriaDiaria.findUnique({
-      where: { ID: id },
+      where: { id: id },
     });
     if (!biometria) {
       throw new NotFoundException(`BiometriaDiaria com ID ${id} não encontrada`);
@@ -37,14 +37,14 @@ export class BiometriaDiariaService {
 
   update(id: number, updateBiometriaDiariaDto: UpdateBiometriaDiariaDto) {
     return this.prisma.biometriaDiaria.update({
-      where: { ID: id },
+      where: { id: id },
       data: updateBiometriaDiariaDto,
     });
   }
 
   remove(id: number) {
     return this.prisma.biometriaDiaria.delete({
-      where: { ID: id },
+      where: { id: id },
     });
   }
 }

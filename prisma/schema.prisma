@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -22,7 +16,7 @@ model TanqueUser {
 }
 
 model UsuarioSIS {
-  ID             Int      @id
+  id             Int      @id
   E_mail         String
   Usuario        String
   Senha          String
@@ -30,12 +24,12 @@ model UsuarioSIS {
 }
 
 model Cooperativa {
-  ID    Int    @id
+  id    Int    @id
   Nome  String
 }
 
 model Tanque {
-  ID             Int    @id @default(autoincrement())
+  id             Int    @id @default(autoincrement())
   Largura        Float?
   Area           Float?
   Local          String?
@@ -44,7 +38,7 @@ model Tanque {
 }
 
 model TanqueAlojamento {
-  ID                  Int    @id @default(autoincrement())
+  id                  Int    @id @default(autoincrement())
   Tanque_Id           Int
   Data_Alojamento     DateTime
   Data_Saida          DateTime?
@@ -58,7 +52,7 @@ model TanqueAlojamento {
 }
 
 model BiometriaDiaria {
-  ID                  Int    @id @default(autoincrement())
+  id                  Int    @id @default(autoincrement())
   Data                  DateTime
   Racao                 Float
   Tanque_Alojamento_Id  Int
@@ -70,7 +64,7 @@ model BiometriaDiaria {
 }
 
 model BiometriaSemanal {
-  ID                  Int    @id @default(autoincrement())
+  id                  Int    @id @default(autoincrement())
   Tanque_Alojamento_Id  Int
   Data_Alojamento       DateTime
   Peixes_Mortos         Int

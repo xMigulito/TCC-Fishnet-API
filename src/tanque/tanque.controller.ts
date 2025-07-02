@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TanqueService } from './tanque.service';
 import { CreateTanqueDto } from './dto/create-tanque.dto';
@@ -16,7 +17,12 @@ export class TanqueController {
   findAll() {
     return this.tanqueService.findAll();
   }
-
+  
+  @Get('resumo')
+  async getResumo() {
+    return this.tanqueService.getResumoTanques();
+  }
+  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.tanqueService.findOne(+id);
@@ -31,4 +37,5 @@ export class TanqueController {
   remove(@Param('id') id: string) {
     return this.tanqueService.remove(+id);
   }
+
 }
