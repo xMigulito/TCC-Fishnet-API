@@ -22,6 +22,8 @@ export class TanqueController {
   async getResumo() {
     return this.tanqueService.getResumoTanques();
   }
+
+
   
   @Get(':id')
   findOne(@Param('id') id: string) {

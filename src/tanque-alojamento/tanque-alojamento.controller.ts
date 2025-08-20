@@ -47,4 +47,9 @@ export class TanqueAlojamentoController {
   remove(@Param('id') id: string) {
     return this.tanqueAlojamentoService.remove(+id);
   }
+
+  @Patch(':id/desalojar')
+  desalojar(@Param('id') id: string) {
+    return this.tanqueAlojamentoService.desalojar(+id);
+  }
 }

@@ -154,7 +154,16 @@ export class TanqueService {
               racaoConsumida
             });
 
-            const peixesMortosPeriodo = biometriaAnterior.Peixes_Mortos ?? 0;
+            // Buscar a biometria anterior mais recente
+            const biometriaAnterior = await this.prisma.biometriaSemanal.findFirst({
+              where: { 
+                Tanque_Alojamento_Id: alojamento.id,
+                Data_Abertura: { lt: biometriaAtual.Data_Abertura }
+              },
+              orderBy: { Data_Abertura: 'desc' }
+            });
+
+            const peixesMortosPeriodo = biometriaAnterior?.Peixes_Mortos ?? 0;
             const populacaoInicialPeriodo = alojamento.Total_Peixes ?? 0;
             const taxaMortalidade = (peixesMortosPeriodo / populacaoInicialPeriodo) * 100;
           }
@@ -184,8 +193,12 @@ export class TanqueService {
         ultimaPh,
         mortesSemanais,
         fca,
+        alojado: !!alojamento,
+        alojamentoId: alojamento?.id ?? null,
       });
     }
     return resumos;
   }
+
+
 }

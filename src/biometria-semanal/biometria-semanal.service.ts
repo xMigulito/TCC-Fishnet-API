@@ -37,10 +37,15 @@ export class BiometriaSemanalService {
   }
 
   update(id: number, updateBiometriaSemanalDto: UpdateBiometriaSemanalDto) {
-    return `This action updates a #${id} biometriaSemanal`;
+    return this.prisma.biometriaSemanal.update({
+      where: { id: id },
+      data: updateBiometriaSemanalDto,
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} biometriaSemanal`;
+    return this.prisma.biometriaSemanal.delete({
+      where: { id: id },
+    });
   }
 }

@@ -65,4 +65,16 @@ export class TanqueAlojamentoService {
   remove(id: number) {
     return this.prisma.tanqueAlojamento.delete({ where: { id: id } });
   }
+
+  async desalojar(id: number) {
+    const alojamento = await this.findOne(id);
+    if (!alojamento) {
+      throw new NotFoundException(`Alojamento com ID ${id} não encontrado`);
+    }
+    
+    return this.prisma.tanqueAlojamento.update({
+      where: { id: id },
+      data: { Data_Saida: new Date() },
+    });
+  }
 }
