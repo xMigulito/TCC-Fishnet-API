@@ -18,6 +18,26 @@ export class TanqueAlojamentoService {
     return this.prisma.tanqueAlojamento.findMany();
   }
 
+  async findAllByUser(userId: number) {
+    // Buscar tanques associados ao usuário
+    const tanqueUsers = await this.prisma.tanqueUser.findMany({
+      where: { Usuario_Sis_Id: userId },
+    });
+
+    const tanqueIds = tanqueUsers.map(tu => tu.Tanque_Id);
+
+    if (tanqueIds.length === 0) {
+      return [];
+    }
+
+    // Buscar alojamentos apenas dos tanques do usuário
+    return this.prisma.tanqueAlojamento.findMany({
+      where: { 
+        Tanque_Id: { in: tanqueIds }
+      },
+    });
+  }
+
   async findOne(id: number) {
     const alojamento = await this.prisma.tanqueAlojamento.findUnique({
       where: { id: id },

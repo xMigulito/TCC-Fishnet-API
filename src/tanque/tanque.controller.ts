@@ -1,10 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { TanqueService } from './tanque.service';
 import { CreateTanqueDto } from './dto/create-tanque.dto';
 import { UpdateTanqueDto } from './dto/update-tanque.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('tanque')
+@UseGuards(JwtAuthGuard)
 export class TanqueController {
   constructor(private readonly tanqueService: TanqueService) {}
 
@@ -14,13 +16,13 @@ export class TanqueController {
   }
 
   @Get()
-  findAll() {
-    return this.tanqueService.findAll();
+  findAll(@Request() req) {
+    return this.tanqueService.findAllByUser(req.user.id);
   }
   
   @Get('resumo')
-  async getResumo() {
-    return this.tanqueService.getResumoTanques();
+  async getResumo(@Request() req) {
+    return this.tanqueService.getResumoTanquesByUser(req.user.id);
   }
 
 

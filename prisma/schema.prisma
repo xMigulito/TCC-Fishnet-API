@@ -7,74 +7,74 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model BiometriaDiaria {
+  Data                      DateTime
+  Racao                     Float
+  Tanque_Alojamento_Id      Int
+  Temperatura_Agua          Float
+  Ph                        Float
+  Temperatura_Ambiente      String
+  Oxigenacao                Float
+  id                        Int      @id @default(autoincrement())
+  Amonia                    Float?
+  Nitrito                   Float?
+  Percentual_Renovacao_Agua Float?
+  Quantidade_Alimentacoes   Int?
+  Transparencia             Float?
+}
+
+model BiometriaSemanal {
+  Tanque_Alojamento_Id Int
+  Data_Alojamento      DateTime
+  Peixes_Mortos        Int
+  Peixes_Capturados    Float
+  Peso                 Float
+  Biomassa_Total       Int
+  Data_Abertura        DateTime
+  Data_Fechamento      DateTime
+  id                   Int      @id @default(autoincrement())
+}
+
+model Cooperativa {
+  Nome String
+  id   Int    @id
+}
+
+model Tanque {
+  Largura     Float?
+  Area        Float?
+  Local       String?
+  Comprimento Float?
+  Capacidade  Float?
+  id          Int     @id @default(autoincrement())
+}
+
+model TanqueAlojamento {
+  Tanque_Id          Int
+  Data_Alojamento    DateTime
+  Data_Saida         DateTime?
+  Custo              Float?
+  Lucro              Float?
+  Valor_Venda_Final  Float?
+  Total_Peixes       Int?
+  Peso_Medio_Inicial Float?
+  Biomassa_Inicial   Int?
+  Cooperativa_Id     Int?
+  id                 Int       @id @default(autoincrement())
+}
+
 model TanqueUser {
-  Usuario_Sis_Id  Int
-  Tanque_Id       Int
-  Alterado_Em     DateTime
+  Usuario_Sis_Id Int
+  Tanque_Id      Int
+  Alterado_Em    DateTime
 
   @@id([Usuario_Sis_Id, Tanque_Id])
 }
 
 model UsuarioSIS {
-  id             Int      @id
-  E_mail         String
-  Usuario        String
+  id             Int    @id
+  E_mail         String @unique
+  Usuario        String @unique
   Senha          String
   Cooperativa_Id Int
-}
-
-model Cooperativa {
-  id    Int    @id
-  Nome  String
-}
-
-model Tanque {
-  id             Int    @id @default(autoincrement())
-  Largura        Float?
-  Area           Float?
-  Local          String?
-  Comprimento    Float?
-  Capacidade     Float?
-}
-
-model TanqueAlojamento {
-  id                  Int    @id @default(autoincrement())
-  Tanque_Id           Int
-  Data_Alojamento     DateTime
-  Data_Saida          DateTime?
-  Custo               Float?
-  Lucro               Float?
-  Valor_Venda_Final   Float?
-  Total_Peixes        Int?
-  Peso_Medio_Inicial  Float?
-  Biomassa_Inicial    Int?
-  Cooperativa_Id      Int?
-}
-
-model BiometriaDiaria {
-  id                  Int    @id @default(autoincrement())
-  Data                  DateTime
-  Racao                 Float
-  Tanque_Alojamento_Id  Int
-  Temperatura_Agua      Float
-  Ph                    Float
-  Temperatura_Ambiente  String
-  Oxigenacao            Float
-  Percentual_Renovacao_Agua Float?  // Percentual de renovação da água
-  Nitrito                    Float?  // Nitrito em mg/L
-  Amonia                     Float?  // Amônia em mg/L
-  Transparencia              Float?  // Transparência em cm
-  Quantidade_Alimentacoes   Int?    // Quantidade de vezes alimentado no dia
-}
-
-model BiometriaSemanal {
-  id                  Int    @id @default(autoincrement())
-  Tanque_Alojamento_Id  Int
-  Data_Alojamento       DateTime
-  Peixes_Mortos         Int
-  Peixes_Capturados     Float
-  Peso                  Float
-  Biomassa_Total        Int
-  Data_Abertura         DateTime
-  Data_Fechamento       DateTime
 }

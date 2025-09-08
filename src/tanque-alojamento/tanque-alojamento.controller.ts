@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Request } from '@nestjs/common';
 import { TanqueAlojamentoService } from './tanque-alojamento.service';
 import { CreateTanqueAlojamentoDto } from './dto/create-tanque-alojamento.dto';
 import { UpdateTanqueAlojamentoDto } from './dto/update-tanque-alojamento.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('tanque-alojamento')
+@UseGuards(JwtAuthGuard)
 export class TanqueAlojamentoController {
   constructor(private readonly tanqueAlojamentoService: TanqueAlojamentoService) {}
 
@@ -13,8 +15,8 @@ export class TanqueAlojamentoController {
   }
 
   @Get()
-  findAll() {
-    return this.tanqueAlojamentoService.findAll();
+  findAll(@Request() req) {
+    return this.tanqueAlojamentoService.findAllByUser(req.user.id);
   }
 
   @Get('tanque/:tanqueId')

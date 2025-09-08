@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { BiometriaDiariaService } from './biometria-diaria.service';
 import { CreateBiometriaDiariaDto } from './dto/create-biometria-diaria.dto';
 import { UpdateBiometriaDiariaDto } from './dto/update-biometria-diaria.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('biometria-diaria')
+@UseGuards(JwtAuthGuard)
 export class BiometriaDiariaController {
   constructor(private readonly biometriaDiariaService: BiometriaDiariaService) {}
 
@@ -13,8 +15,8 @@ export class BiometriaDiariaController {
   }
 
   @Get()
-  findAll() {
-    return this.biometriaDiariaService.findAll();
+  findAll(@Request() req) {
+    return this.biometriaDiariaService.findAllByUser(req.user.id);
   }
 
   @Get(':id')

@@ -198,13 +198,37 @@ export class DashboardService {
     return dadosMensais;
   }
 
-  async getDashboardInfo() {
-    const tanques = await this.prisma.tanque.findMany();
-    const alojamentos = await this.prisma.tanqueAlojamento.findMany({
-      where: { Data_Saida: null },
+  async getDashboardInfo(userId: number) {
+    // Buscar tanques do usuário
+    const tanquesUsuario = await this.prisma.tanqueUser.findMany({
+      where: { Usuario_Sis_Id: userId },
     });
-    const biometriasDiarias = await this.prisma.biometriaDiaria.findMany();
-    const biometriasSemanais = await this.prisma.biometriaSemanal.findMany();
+
+    const tanqueIds = tanquesUsuario.map(tu => tu.Tanque_Id);
+
+    // Buscar alojamentos apenas dos tanques do usuário
+    const alojamentos = await this.prisma.tanqueAlojamento.findMany({
+      where: { 
+        Data_Saida: null,
+        Tanque_Id: { in: tanqueIds }
+      },
+    });
+
+    const alojamentoIds = alojamentos.map(a => a.id);
+
+    // Buscar biometrias apenas dos alojamentos do usuário
+    const biometriasDiarias = await this.prisma.biometriaDiaria.findMany({
+      where: { Tanque_Alojamento_Id: { in: alojamentoIds } },
+    });
+    
+    const biometriasSemanais = await this.prisma.biometriaSemanal.findMany({
+      where: { Tanque_Alojamento_Id: { in: alojamentoIds } },
+    });
+
+    // Buscar informações dos tanques
+    const tanques = await this.prisma.tanque.findMany({
+      where: { id: { in: tanqueIds } },
+    });
 
     const dadosPorTanque = tanques.map(tanque => {
       const alojamentosTanque = alojamentos.filter(a => a.Tanque_Id === tanque.id);
