@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TanqueModule } from './tanque/tanque.module';
 import { TanqueAlojamentoModule } from './tanque-alojamento/tanque-alojamento.module';
-import { PrismaService } from './prisma.service';
+import { PrismaModule } from './prisma/prisma.module';
 import { TanqueUserModule } from './tanque-user/tanque-user.module';
 import { UsuarioSisModule } from './usuario-sis/usuario-sis.module';
 import { CooperativaModule } from './cooperativa/cooperativa.module';
@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    PrismaModule,
     AuthModule,
     TanqueModule, 
     TanqueAlojamentoModule, 
@@ -25,6 +26,6 @@ import { AuthModule } from './auth/auth.module';
     DashboardModule
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService],
 })
 export class AppModule {}
