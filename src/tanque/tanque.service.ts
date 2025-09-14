@@ -232,20 +232,28 @@ export class TanqueService {
   }
 
   async getResumoTanquesByUser(userId: number) {
+    console.log('🔍 Buscando tanques para usuário:', userId);
+    
     // Buscar tanques associados ao usuário
     const tanqueUsers = await this.prisma.tanqueUser.findMany({
       where: { Usuario_Sis_Id: userId },
     });
 
+    console.log('📊 Relações TanqueUser encontradas:', tanqueUsers);
+
     const tanqueIds = tanqueUsers.map(tu => tu.Tanque_Id);
+    console.log('📊 IDs dos tanques:', tanqueIds);
 
     if (tanqueIds.length === 0) {
+      console.log('⚠️ Nenhum tanque encontrado para o usuário');
       return [];
     }
 
     const tanques = await this.prisma.tanque.findMany({
       where: { id: { in: tanqueIds } },
     });
+    
+    console.log('📊 Tanques encontrados no banco:', tanques);
     
     const resumos: any[] = [];
     for (const tanque of tanques) {
@@ -358,6 +366,10 @@ export class TanqueService {
         alojamentoId: alojamento?.id ?? null,
       });
     }
+    
+    console.log('📊 Resumos finais gerados:', resumos);
+    console.log('📊 Quantidade de resumos:', resumos.length);
+    
     return resumos;
   }
 

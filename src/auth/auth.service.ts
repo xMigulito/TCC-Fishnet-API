@@ -26,7 +26,6 @@ export class AuthService {
     const payload = { 
       email: user.E_mail, 
       sub: user.id, 
-      cooperativa: user.Cooperativa_Id,
       usuario: user.Usuario 
     };
     
@@ -36,12 +35,11 @@ export class AuthService {
         id: user.id,
         email: user.E_mail,
         usuario: user.Usuario,
-        cooperativa: user.Cooperativa_Id,
       },
     };
   }
 
-  async register(email: string, usuario: string, password: string, cooperativaId: number) {
+  async register(email: string, usuario: string, password: string) {
     // Verificar se o usuário já existe
     const existingUser = await this.prisma.usuarioSIS.findFirst({
       where: {
@@ -66,7 +64,6 @@ export class AuthService {
         E_mail: email,
         Usuario: usuario,
         Senha: hashedPassword,
-        Cooperativa_Id: cooperativaId,
       },
     });
 

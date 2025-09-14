@@ -9,6 +9,7 @@ export class TanqueAlojamentoService {
   constructor(private readonly prisma: PrismaService) {}
 
   create(createTanqueAlojamentoDto: CreateTanqueAlojamentoDto) {
+    console.log('🏠 Criando alojamento:', createTanqueAlojamentoDto);
     return this.prisma.tanqueAlojamento.create({
       data: createTanqueAlojamentoDto,
     });

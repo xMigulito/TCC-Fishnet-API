@@ -8,5 +8,4 @@ export class CreateTanqueAlojamentoDto {
   Total_Peixes: number;
   Peso_Medio_Inicial: number;
   Biomassa_Inicial: number;
-  Cooperativa_Id: number;
 }

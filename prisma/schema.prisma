@@ -35,10 +35,6 @@ model BiometriaSemanal {
   id                   Int      @id @default(autoincrement())
 }
 
-model Cooperativa {
-  Nome String
-  id   Int    @id
-}
 
 model Tanque {
   Largura     Float?
@@ -59,7 +55,6 @@ model TanqueAlojamento {
   Total_Peixes       Int?
   Peso_Medio_Inicial Float?
   Biomassa_Inicial   Int?
-  Cooperativa_Id     Int?
   id                 Int       @id @default(autoincrement())
 }
 
@@ -76,5 +71,4 @@ model UsuarioSIS {
   E_mail         String @unique
   Usuario        String @unique
   Senha          String
-  Cooperativa_Id Int
 }

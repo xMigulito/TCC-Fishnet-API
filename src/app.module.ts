@@ -6,7 +6,6 @@ import { TanqueAlojamentoModule } from './tanque-alojamento/tanque-alojamento.mo
 import { PrismaModule } from './prisma/prisma.module';
 import { TanqueUserModule } from './tanque-user/tanque-user.module';
 import { UsuarioSisModule } from './usuario-sis/usuario-sis.module';
-import { CooperativaModule } from './cooperativa/cooperativa.module';
 import { BiometriaDiariaModule } from './biometria-diaria/biometria-diaria.module';
 import { BiometriaSemanalModule } from './biometria-semanal/biometria-semanal.module';
 import { DashboardModule } from './dashboard/dashboard.module';
@@ -20,7 +19,6 @@ import { AuthModule } from './auth/auth.module';
     TanqueAlojamentoModule, 
     TanqueUserModule, 
     UsuarioSisModule, 
-    CooperativaModule, 
     BiometriaDiariaModule, 
     BiometriaSemanalModule, 
     DashboardModule

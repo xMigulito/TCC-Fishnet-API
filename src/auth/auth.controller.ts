@@ -19,14 +19,12 @@ export class AuthController {
       email: string;
       usuario: string;
       password: string;
-      cooperativaId: number;
     },
   ) {
     return this.authService.register(
       body.email,
       body.usuario,
       body.password,
-      body.cooperativaId,
     );
   }
 
