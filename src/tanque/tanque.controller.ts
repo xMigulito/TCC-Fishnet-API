@@ -11,8 +11,8 @@ export class TanqueController {
   constructor(private readonly tanqueService: TanqueService) {}
 
   @Post()
-  create(@Body() createTanqueDto: CreateTanqueDto) {
-    return this.tanqueService.create(createTanqueDto);
+  create(@Body() createTanqueDto: CreateTanqueDto, @Request() req) {
+    return this.tanqueService.create(createTanqueDto, req.user.id);
   }
 
   @Get()
@@ -25,8 +25,6 @@ export class TanqueController {
     return this.tanqueService.getResumoTanquesByUser(req.user.id);
   }
 
-
-  
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.tanqueService.findOne(+id);
@@ -41,5 +39,4 @@ export class TanqueController {
   remove(@Param('id') id: string) {
     return this.tanqueService.remove(+id);
   }
-
 }

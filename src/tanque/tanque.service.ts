@@ -13,16 +13,29 @@ import { UpdateTanqueDto } from './dto/update-tanque.dto';
 export class TanqueService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createTanqueDto: CreateTanqueDto) {
+  async create(createTanqueDto: CreateTanqueDto, userId: number) {
     const area = (createTanqueDto.Largura ?? 0) * (createTanqueDto.Comprimento ?? 0);
     const capacidade = area * 1; 
-    return this.prisma.tanque.create({
+    
+    // Criar o tanque
+    const tanque = await this.prisma.tanque.create({
       data: {
         ...createTanqueDto,
         Area: area,
         Capacidade: capacidade,
       },
     });
+
+    // Criar a relação TanqueUser para vincular o tanque ao usuário
+    await this.prisma.tanqueUser.create({
+      data: {
+        Tanque_Id: tanque.id,
+        Usuario_Sis_Id: userId,
+        Alterado_Em: new Date(),
+      },
+    });
+
+    return tanque;
   }
 
   async findAll() {
