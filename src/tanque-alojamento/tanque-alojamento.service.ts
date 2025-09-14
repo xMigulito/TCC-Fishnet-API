@@ -57,13 +57,6 @@ export class TanqueAlojamentoService {
     });
   }
 
-  async findByCooperativa(cooperativaId: number) {
-    return this.prisma.tanqueAlojamento.findMany({
-      where: {
-        Cooperativa_Id: cooperativaId
-      }
-    });
-  }
 
   async findByDateRange(startDate: Date, endDate: Date) {
     return this.prisma.tanqueAlojamento.findMany({
