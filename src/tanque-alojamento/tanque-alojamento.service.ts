@@ -80,15 +80,43 @@ export class TanqueAlojamentoService {
     return this.prisma.tanqueAlojamento.delete({ where: { id: id } });
   }
 
-  async desalojar(id: number) {
+  async desalojar(id: number, userId?: number) {
+    console.log('🔄 Iniciando desalojamento para ID:', id, 'User ID:', userId);
+    
     const alojamento = await this.findOne(id);
     if (!alojamento) {
       throw new NotFoundException(`Alojamento com ID ${id} não encontrado`);
     }
     
-    return this.prisma.tanqueAlojamento.update({
+    console.log('📊 Alojamento encontrado:', alojamento);
+    
+    // Verificar se o usuário tem permissão para desalojar este tanque
+    if (userId) {
+      const tanqueUser = await this.prisma.tanqueUser.findFirst({
+        where: {
+          Tanque_Id: alojamento.Tanque_Id,
+          Usuario_Sis_Id: userId
+        }
+      });
+      
+      if (!tanqueUser) {
+        throw new Error('Você não tem permissão para desalojar este tanque');
+      }
+    }
+    
+    // Verificar se já foi desalojado
+    if (alojamento.Data_Saida) {
+      console.log('⚠️ Alojamento já foi desalojado em:', alojamento.Data_Saida);
+      throw new Error('Este alojamento já foi desalojado');
+    }
+    
+    console.log('✅ Desalojando alojamento...');
+    const result = await this.prisma.tanqueAlojamento.update({
       where: { id: id },
       data: { Data_Saida: new Date() },
     });
+    
+    console.log('✅ Desalojamento concluído:', result);
+    return result;
   }
 }

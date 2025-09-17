@@ -42,6 +42,7 @@ model Tanque {
   Local       String?
   Comprimento Float?
   Capacidade  Float?
+  ativo       Boolean @default(true) @map("Ativo")
   id          Int     @id @default(autoincrement())
 }
 

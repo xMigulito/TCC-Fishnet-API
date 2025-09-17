@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Tanque" ADD COLUMN "Ativo" BOOLEAN NOT NULL DEFAULT true;

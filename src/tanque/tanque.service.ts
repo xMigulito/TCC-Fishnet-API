@@ -8,6 +8,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { CreateTanqueDto } from './dto/create-tanque.dto';
 import { UpdateTanqueDto } from './dto/update-tanque.dto';
+import { ToggleTanqueStatusDto } from './dto/toggle-tanque-status.dto';
 
 @Injectable()
 export class TanqueService {
@@ -56,7 +57,10 @@ export class TanqueService {
     }
 
     const tanques = await this.prisma.tanque.findMany({
-      where: { id: { in: tanqueIds } },
+      where: { 
+        id: { in: tanqueIds },
+        ativo: true // Filtrar apenas tanques ativos
+      },
     });
     return tanques;
   }
@@ -87,7 +91,10 @@ export class TanqueService {
     const resumos: any[] = [];
     for (const tanque of tanques) {
       const alojamento = await this.prisma.tanqueAlojamento.findFirst({
-        where: { Tanque_Id: tanque.id, Data_Saida: null },
+        where: { 
+          Tanque_Id: tanque.id, 
+          Data_Saida: { equals: null }
+        },
         orderBy: { Data_Alojamento: 'desc' },
       });
 
@@ -250,7 +257,10 @@ export class TanqueService {
     }
 
     const tanques = await this.prisma.tanque.findMany({
-      where: { id: { in: tanqueIds } },
+      where: { 
+        id: { in: tanqueIds },
+        ativo: true // Filtrar apenas tanques ativos
+      },
     });
     
     console.log('📊 Tanques encontrados no banco:', tanques);
@@ -258,7 +268,10 @@ export class TanqueService {
     const resumos: any[] = [];
     for (const tanque of tanques) {
       const alojamento = await this.prisma.tanqueAlojamento.findFirst({
-        where: { Tanque_Id: tanque.id, Data_Saida: null },
+        where: { 
+          Tanque_Id: tanque.id, 
+          Data_Saida: { equals: null }
+        },
         orderBy: { Data_Alojamento: 'desc' },
       });
 
@@ -373,5 +386,45 @@ export class TanqueService {
     return resumos;
   }
 
+  async toggleStatus(id: number, toggleStatusDto: ToggleTanqueStatusDto) {
+    const tanque = await this.prisma.tanque.findUnique({
+      where: { id: id },
+    });
+
+    if (!tanque) {
+      throw new NotFoundException(`Tanque com ID ${id} não encontrado`);
+    }
+
+    return this.prisma.tanque.update({
+      where: { id: id },
+      data: { ativo: toggleStatusDto.Ativo },
+    });
+  }
+
+  async desativarTanque(id: number) {
+    return this.toggleStatus(id, { Ativo: false });
+  }
+
+  async ativarTanque(id: number) {
+    return this.toggleStatus(id, { Ativo: true });
+  }
+
+  async findAllIncludingInactive(userId: number) {
+    // Buscar tanques associados ao usuário (incluindo inativos)
+    const tanqueUsers = await this.prisma.tanqueUser.findMany({
+      where: { Usuario_Sis_Id: userId },
+    });
+
+    const tanqueIds = tanqueUsers.map(tu => tu.Tanque_Id);
+
+    if (tanqueIds.length === 0) {
+      return [];
+    }
+
+    const tanques = await this.prisma.tanque.findMany({
+      where: { id: { in: tanqueIds } },
+    });
+    return tanques;
+  }
 
 }

@@ -3,6 +3,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request }
 import { TanqueService } from './tanque.service';
 import { CreateTanqueDto } from './dto/create-tanque.dto';
 import { UpdateTanqueDto } from './dto/update-tanque.dto';
+import { ToggleTanqueStatusDto } from './dto/toggle-tanque-status.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('tanque')
@@ -25,6 +26,11 @@ export class TanqueController {
     return this.tanqueService.getResumoTanquesByUser(req.user.id);
   }
 
+  @Get('todos')
+  async findAllIncludingInactive(@Request() req) {
+    return this.tanqueService.findAllIncludingInactive(req.user.id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.tanqueService.findOne(+id);
@@ -38,5 +44,20 @@ export class TanqueController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.tanqueService.remove(+id);
+  }
+
+  @Patch(':id/status')
+  toggleStatus(@Param('id') id: string, @Body() toggleStatusDto: ToggleTanqueStatusDto) {
+    return this.tanqueService.toggleStatus(+id, toggleStatusDto);
+  }
+
+  @Patch(':id/desativar')
+  desativarTanque(@Param('id') id: string) {
+    return this.tanqueService.desativarTanque(+id);
+  }
+
+  @Patch(':id/ativar')
+  ativarTanque(@Param('id') id: string) {
+    return this.tanqueService.ativarTanque(+id);
   }
 }
